@@ -3,7 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daftar Jurnal</title>
+    <title>Jurnal Sinta</title>
+    <link href='https://download.vandi.id/vandi/icon.png' rel='icon' sizes='32x32'/>
+    <link href='https://download.vandi.id/vandi/icon.png' rel='icon' sizes='192x192'/>
+    <link href='https://download.vandi.id/vandi/icon.png' rel='apple-touch-icon'/>
+    <meta content='https://download.vandi.id/vandi/icon.png' name='msapplication-TileImage'/>
     <style>
         * {
             margin: 0;
@@ -268,7 +272,7 @@
 <body>
     <div class="container">
         <header>
-            <h1>📚 Direktori Jurnal</h1>
+            <h1>Jurnal Sinta</h1>
             <p>Daftar jurnal terakreditasi SINTA</p>
             <p id="live-status" class="live-status">🟢 Live</p>
         </header>
@@ -418,8 +422,8 @@
                         <span class="info-value">${item.masa_berlaku}</span>
                     </div>
                     <div class="info-row">
-                        <span class="info-label">Tanggal Publikasi</span>
-                        <span class="info-value">${item.tanggal_publikasi}</span>
+                        <span class="info-label">Bulan Publikasi</span>
+                        <span class="info-value">${item.bulan_publikasi}</span>
                     </div>
                     <div class="info-row">
                         <span class="info-label">Biaya</span>
@@ -449,7 +453,7 @@
                 const matchNama = item.nama_jurnal.toLowerCase().includes(searchNama);
                 const matchKampus = item.kampus.toLowerCase().includes(searchKampus);
                 const matchSubject = item.subject_area.toLowerCase().includes(searchSubject);
-                const matchTahun = item.tanggal_publikasi.toLowerCase().includes(searchTahun) || 
+                const matchTahun = item.bulan_publikasi.toLowerCase().includes(searchTahun) || 
                                   item.masa_berlaku.toLowerCase().includes(searchTahun);
                 const matchSinta = filterSinta === '' || item.akreditasi_sinta === filterSinta;
                 
