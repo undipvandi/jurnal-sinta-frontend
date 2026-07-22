@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jurnal Sinta</title>
+    <link href='https://download.vandi.id/vandi/icon.png' rel='icon' sizes='32x32'/>
+    <link href='https://download.vandi.id/vandi/icon.png' rel='icon' sizes='192x192'/>
+    <link href='https://download.vandi.id/vandi/icon.png' rel='apple-touch-icon'/>
+    <meta content='https://download.vandi.id/vandi/icon.png' name='msapplication-TileImage'/>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .live-status {
+            font-size: 0.85rem;
+            opacity: 0.85;
+            margin-top: 8px;
+        }
+
+        .jurnal-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+        }
+
+        .jurnal-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .jurnal-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        .jurnal-card h2 {
+            color: #667eea;
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: #555;
+        }
+
+        .info-value {
+            color: #333;
+            text-align: right;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .badge-sinta {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .badge-fast-ya {
+            background: #c8e6c9;
+            color: #388e3c;
+        }
+
+        .badge-fast-tidak {
+            background: #ffebee;
+            color: #d32f2f;
+        }
+
+        .btn-visit {
+            display: inline-block;
+            width: 100%;
+            padding: 12px 20px;
+            margin-top: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 600;
+            transition: opacity 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-visit:hover {
+            opacity: 0.9;
+        }
+
+        .loading {
+            text-align: center;
+            color: white;
+            font-size: 1.5rem;
+            padding: 50px;
+        }
+
+        .error {
+            text-align: center;
+            color: #ffcdd2;
+            background: rgba(255,0,0,0.2);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+
+            .jurnal-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .info-row {
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            .info-value {
+                text-align: left;
+            }
+        }
+
+        .filter-section {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .filter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .filter-group label {
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+        }
+
+        .filter-group input,
+        .filter-group select {
+            padding: 10px 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            transition: border-color 0.3s ease;
+            font-family: inherit;
+        }
+
+        .filter-group input:focus,
+        .filter-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .filter-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .btn-reset {
+            padding: 10px 20px;
+            background: #f5f5f5;
+            color: #666;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-reset:hover {
+            background: #e0e0e0;
+            border-color: #ccc;
+        }
+
+        .result-count {
+            margin-left: auto;
+            color: #667eea;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 50px;
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        @media (max-width: 640px) {
+            .filter-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-actions {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .result-count {
+                margin-left: 0;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Jurnal Sinta</h1>
+            <p>Daftar jurnal terakreditasi SINTA 1 dan SINTA 2</p>
+            <p>Spesifik untuk Teknik Informatika, Sistem Informasi, Ilmu Komputer dan Teknologi Informasi</p>
+            <p id="live-status" class="live-status">🟢 Live</p>
+        </header>
+
+        <div class="filter-section">
+            <div class="filter-grid">
+                <div class="filter-group">
+                    <label for="search-nama">🔍 Nama Jurnal</label>
+                    <input type="text" id="search-nama" placeholder="Cari nama jurnal...">
+                </div>
+                <div class="filter-group">
+                    <label for="search-kampus">🏫 Kampus</label>
+                    <input type="text" id="search-kampus" placeholder="Cari kampus...">
+                </div>
+                <div class="filter-group">
+                    <label for="search-subject">📖 Subject Area</label>
+                    <input type="text" id="search-subject" placeholder="Cari subject area...">
+                </div>
+                <div class="filter-group">
+                    <label for="search-tahun">📅 Tahun</label>
+                    <input type="text" id="search-tahun" placeholder="Cari tahun...">
+                </div>
+                <div class="filter-group">
+                    <label for="filter-sinta">⭐ Akreditasi SINTA</label>
+                    <select id="filter-sinta">
+                        <option value="">Semua</option>
+                        <option value="Sinta 1">Sinta 1</option>
+                        <option value="Sinta 2">Sinta 2</option>
+                        <option value="Sinta 3">Sinta 3</option>
+                        <option value="Sinta 4">Sinta 4</option>
+                        <option value="Sinta 5">Sinta 5</option>
+                        <option value="Sinta 6">Sinta 6</option>
+                    </select>
+                </div>
+            </div>
+            <div class="filter-actions">
+                <button class="btn-reset" id="btn-reset">🔄 Reset Filter</button>
+                <span class="result-count" id="result-count">0 jurnal ditemukan</span>
+            </div>
+        </div>
+
+        <div id="jurnal-container" class="jurnal-grid">
+            <div class="loading">Memuat data...</div>
+        </div>
+    </div>
+
+    <script>
+        let allData = []; // Store all journal data
+        let lastDataString = ''; // Untuk mendeteksi perubahan data
+        const DATA_URL = 'data.json';
+        const POLL_INTERVAL = 30000; // Cek data baru setiap 30 detik
+
+        async function loadJurnalData(silent = false) {
+            const container = document.getElementById('jurnal-container');
+
+            try {
+                // Cache-busting (?t=...) agar selalu mengambil versi terbaru,
+                // bukan dari cache browser/CDN
+                const response = await fetch(`${DATA_URL}?t=${Date.now()}`, { cache: 'no-store' });
+
+                if (!response.ok) {
+                    throw new Error('Gagal memuat data');
+                }
+
+                const newData = await response.json();
+                const newDataString = JSON.stringify(newData);
+
+                // Hanya render ulang jika data benar-benar berubah
+                if (newDataString !== lastDataString) {
+                    lastDataString = newDataString;
+                    allData = newData;
+                    filterData(); // Terapkan ulang filter yang sedang aktif
+                }
+
+                updateLiveStatus(true);
+
+            } catch (error) {
+                updateLiveStatus(false);
+                // Hanya tampilkan pesan error besar jika belum ada data sama sekali
+                if (!silent && allData.length === 0) {
+                    container.innerHTML = `
+                        <div class="error">
+                            <p>⚠️ Terjadi kesalahan saat memuat data</p>
+                            <p style="font-size: 0.9rem; margin-top: 10px;">${error.message}</p>
+                        </div>
+                    `;
+                }
+                console.error('Error loading data:', error);
+            }
+        }
+
+        function updateLiveStatus(isOnline) {
+            const el = document.getElementById('live-status');
+            if (!el) return;
+            const time = new Date().toLocaleTimeString('id-ID');
+            el.textContent = isOnline
+                ? `🟢 Update terakhir: 22 Juli 2026`
+                : '🔴 Koneksi gagal • mencoba lagi...';
+        }
+
+        function startAutoRefresh() {
+            // Polling berkala di background
+            setInterval(() => loadJurnalData(true), POLL_INTERVAL);
+
+            // Langsung cek data saat tab kembali aktif
+            document.addEventListener('visibilitychange', () => {
+                if (!document.hidden) loadJurnalData(true);
+            });
+        }
+
+        function renderJurnalCards(data) {
+            const container = document.getElementById('jurnal-container');
+            const resultCount = document.getElementById('result-count');
+            
+            // Update result count
+            resultCount.textContent = `${data.length} jurnal ditemukan`;
+            
+            if (data.length === 0) {
+                container.innerHTML = '';
+                return;
+            }
+            
+            container.innerHTML = '';
+            
+            data.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'jurnal-card';
+                
+                const fastTrackClass = item.fast_track.toLowerCase() === 'ya' ? 'badge-fast-ya' : 'badge-fast-tidak';
+                
+                card.innerHTML = `
+                    <h2>${item.nama_jurnal}</h2>
+                    <div class="info-row">
+                        <span class="info-label">Kampus</span>
+                        <span class="info-value">${item.kampus}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Subject Area</span>
+                        <span class="info-value">${item.subject_area}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Akreditasi</span>
+                        <span class="info-value"><span class="badge badge-sinta">${item.akreditasi_sinta}</span></span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Masa Berlaku</span>
+                        <span class="info-value">${item.masa_berlaku}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Bulan Publikasi</span>
+                        <span class="info-value">${item.bulan_publikasi}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Biaya</span>
+                        <span class="info-value">${item.biaya}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Fast Track</span>
+                        <span class="info-value"><span class="badge ${fastTrackClass}">${item.fast_track}</span></span>
+                    </div>
+                    <a href="${item.situs_web}" target="_blank" rel="noopener noreferrer" class="btn-visit">
+                        🔗 Kunjungi Halaman
+                    </a>
+                `;
+
+                container.appendChild(card);
+            });
+        }
+
+        function filterData() {
+            const searchNama = document.getElementById('search-nama').value.toLowerCase();
+            const searchKampus = document.getElementById('search-kampus').value.toLowerCase();
+            const searchSubject = document.getElementById('search-subject').value.toLowerCase();
+            const searchTahun = document.getElementById('search-tahun').value.toLowerCase();
+            const filterSinta = document.getElementById('filter-sinta').value;
+            
+            const filtered = allData.filter(item => {
+                const matchNama = item.nama_jurnal.toLowerCase().includes(searchNama);
+                const matchKampus = item.kampus.toLowerCase().includes(searchKampus);
+                const matchSubject = item.subject_area.toLowerCase().includes(searchSubject);
+                const matchTahun = item.bulan_publikasi.toLowerCase().includes(searchTahun) || 
+                                  item.masa_berlaku.toLowerCase().includes(searchTahun);
+                const matchSinta = filterSinta === '' || item.akreditasi_sinta === filterSinta;
+                
+                return matchNama && matchKampus && matchSubject && matchTahun && matchSinta;
+            });
+            
+            renderJurnalCards(filtered);
+        }
+
+        function resetFilter() {
+            document.getElementById('search-nama').value = '';
+            document.getElementById('search-kampus').value = '';
+            document.getElementById('search-subject').value = '';
+            document.getElementById('search-tahun').value = '';
+            document.getElementById('filter-sinta').value = '';
+            renderJurnalCards(allData);
+        }
+
+        // Load data when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            loadJurnalData();
+            startAutoRefresh();
+
+            // Add event listeners for real-time filtering
+            document.getElementById('search-nama').addEventListener('input', filterData);
+            document.getElementById('search-kampus').addEventListener('input', filterData);
+            document.getElementById('search-subject').addEventListener('input', filterData);
+            document.getElementById('search-tahun').addEventListener('input', filterData);
+            document.getElementById('filter-sinta').addEventListener('change', filterData);
+            document.getElementById('btn-reset').addEventListener('click', resetFilter);
+        });
+    </script>
+</body>
+</html>
