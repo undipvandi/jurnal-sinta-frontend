@@ -181,7 +181,7 @@
             const container = document.getElementById('jurnal-container');
             
             try {
-                const response = await fetch('data.json');
+                const response = await fetch('https://raw.githubusercontent.com/undipvandi/jurnal-sinta-frontend/refs/heads/main/data.json');
                 
                 if (!response.ok) {
                     throw new Error('Gagal memuat data');
