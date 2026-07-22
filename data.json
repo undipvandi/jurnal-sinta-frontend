@@ -6,9 +6,9 @@
         "subject_area": "IT",
         "akreditasi_sinta": "Sinta 2",
         "masa_berlaku": "2025",
-        "tanggal_publikasi": "1 Jan 2023",
+        "bulan_publikasi": "1 Jan 2023",
         "situs_web": "https:\/\/example.com",
-        "biaya": "1juta Rupiah",
+        "biaya": "1M Rupiah",
         "fast_track": "Ya"
     },
     {
@@ -18,9 +18,9 @@
         "subject_area": "Hukum",
         "akreditasi_sinta": "Sinta 1",
         "masa_berlaku": "2024",
-        "tanggal_publikasi": "5 Mei 2023",
+        "bulan_publikasi": "5 Mei 2023",
         "situs_web": "https:\/\/example2.com",
-        "biaya": "2Ms",
+        "biaya": "2M",
         "fast_track": "Tidak"
     }
 ]
