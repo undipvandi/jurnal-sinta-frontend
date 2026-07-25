@@ -8,6 +8,12 @@
     <link href='https://download.vandi.id/vandi/icon.png' rel='icon' sizes='192x192'/>
     <link href='https://download.vandi.id/vandi/icon.png' rel='apple-touch-icon'/>
     <meta content='https://download.vandi.id/vandi/icon.png' name='msapplication-TileImage'/>
+    <meta content='Daftar jurnal terakreditasi Sinta 1 dan Sinta 2 terbaru' name='description'/>
+    <!-- URL Theme Color untuk Chrome, Firefox OS, Opera dan Vivaldi -->
+    <meta content='#667eea' name='theme-color'/>
+    <!-- URL Theme Color untuk iOS Safari -->
+    <meta content='yes' name='apple-mobile-web-app-capable'/>
+    <meta content='#667eea' name='apple-mobile-web-app-status-bar-style'/>
     <style>
         * {
             margin: 0;
@@ -715,7 +721,18 @@
             
             // Reset to first page when filter changes
             currentPage = 1;
+            filteredData = sortData(filteredData);
             renderJurnalCards(filteredData);
+        }
+
+        function sortData(data) {
+            return data.slice().sort((a, b) => {
+                const getSintaNumber = (s) => {
+                    const match = s.match(/Sinta\s*(\d+)/i);
+                    return match ? parseInt(match[1]) : 999;
+                };
+                return getSintaNumber(a.akreditasi_sinta) - getSintaNumber(b.akreditasi_sinta);
+            });
         }
 
         function resetFilter() {
@@ -725,8 +742,8 @@
             document.getElementById('search-tahun').value = '';
             document.getElementById('filter-sinta').value = '';
             currentPage = 1;
-            filteredData = allData;
-            renderJurnalCards(allData);
+            filteredData = sortData(allData);
+            renderJurnalCards(filteredData);
         }
 
         // Load data when page loads
