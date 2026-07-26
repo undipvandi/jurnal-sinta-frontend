@@ -109,9 +109,34 @@
             font-weight: 600;
         }
 
-        .badge-sinta {
-            background: #e3f2fd;
-            color: #1976d2;
+        .badge-sinta-1 {
+            background: #8bc34a;
+            color: #fff;
+        }
+
+        .badge-sinta-2 {
+            background: #cddc39;
+            color: #fff;
+        }
+
+        .badge-sinta-3 {
+            background: #ffeb3b;
+            color: #333;
+        }
+
+        .badge-sinta-4 {
+            background: #ffc107;
+            color: #333;
+        }
+
+        .badge-sinta-5 {
+            background: #ff9800;
+            color: #fff;
+        }
+
+        .badge-sinta-6 {
+            background: #ff5722;
+            color: #fff;
         }
 
         .badge-fast-ya {
@@ -585,7 +610,13 @@
                 card.className = 'jurnal-card';
                 
                 const fastTrackClass = item.fast_track.toLowerCase() === 'ya' ? 'badge-fast-ya' : 'badge-fast-tidak';
-                
+
+                const sintaMatch = item.akreditasi_sinta.match(/Sinta\s*(\d+)/i);
+                const sintaNumber = sintaMatch ? parseInt(sintaMatch[1]) : null;
+                const sintaClass = sintaNumber && sintaNumber >= 1 && sintaNumber <= 6
+                    ? `badge-sinta-${sintaNumber}`
+                    : 'badge-sinta-1';
+
                 card.innerHTML = `
                     <h2>${item.nama_jurnal}</h2>
                     <div class="info-row">
@@ -598,7 +629,7 @@
                     </div>
                     <div class="info-row">
                         <span class="info-label">Akreditasi</span>
-                        <span class="info-value"><span class="badge badge-sinta">${item.akreditasi_sinta}</span></span>
+                        <span class="info-value"><span class="badge ${sintaClass}">${item.akreditasi_sinta}</span></span>
                     </div>
                     <div class="info-row">
                         <span class="info-label">Masa Berlaku</span>
